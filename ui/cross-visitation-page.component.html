@@ -1,0 +1,48 @@
+<div class="page-bg page-bg_white components">
+    <div class="container">
+        <div class="row space_outer_b_sm space_inner_t_sm">
+            <div class="col-12 components__crumbs_title-form">
+                <crumbs_title-form Level="h2">
+                    {{ 'header.leasing.subHeader.crossVisitation' | translate }}
+                </crumbs_title-form>
+            </div>
+        </div>
+        <div class="row space_outer_b_lg">
+            <div class="col-12 components__retail_filters-form">
+                <retail_filters-form
+                    [Settings]="RetailFilterSetting"
+                    [Periods]="Periods"
+                    [CrossVisitationSet]="CrossVisitationForFilter"
+                    [Entities]="EntitiesForFilter"
+                    [Presets]="FilterPresetGroup$ | async"
+                    (PresetAction)="handlePresetAction($event)"
+                    (Accept)="onAcceptFilter($event)">
+                </retail_filters-form>
+            </div>
+        </div>
+        <div class="row space_outer_b_lg">
+            <div class="col-12 components__cross-visitation-table-form">
+                <ng-template [ngIf]="!(IsParamError || IsParamLoading)"
+                             [ngIfElse]="ParamStateMessageTemplate">
+                    <cross-visitation-table-list-form
+                        [LayoutId]="Layout?.Id"
+                        [Period]="Periods[0]"
+                        [Entities]="Entities"
+                        [SelectedEntities]="SelectedEntities"
+                        [EntityType]="SelectedEntityType"
+                        [EntityForFiltering]="EntityForFiltering">
+                    </cross-visitation-table-list-form>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #ParamStateMessageTemplate>
+    <ng-template [ngIf]="IsParamError" [ngIfElse]="LoadingMessageTemplate">
+        <div class="text-center">{{ 'missing.data' | translate }}</div>
+    </ng-template>
+    <ng-template #LoadingMessageTemplate>
+        <div class="text-center">{{ 'common.loading' | translate }}</div>
+    </ng-template>
+</ng-template>
